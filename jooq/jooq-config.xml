@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.14.0.xsd">
+    <!-- Configure the database connection here -->
+    <jdbc>
+        <!-- <driver>org.postgresql.Driver</driver> -->
+        <!-- <url>jdbc:postgresql://127.0.0.1/test</url> -->
+        <driver>com.mysql.cj.jdbc.Driver</driver>
+        <url>jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC&amp;useLegacyDatetimeCode=false</url>
+        <user>user1</user>
+        <password>pw123456</password>
+    </jdbc>
+    <generator>
+        <name>org.jooq.codegen.JavaGenerator</name>
+        <database>
+            <!-- <name>org.jooq.meta.postgres.PostgresDatabase</name> -->
+            <!-- <inputSchema>public</inputSchema> -->
+            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+            <inputSchema>testdb</inputSchema>
+            <includes>.*</includes>
+            <excludes>flyway_schema_history</excludes>
+        </database>
+        <target>
+            <packageName>com.example.demo.enterprise.domain</packageName>
+            <directory>./src/main/java</directory>
+        </target>
+        <generate>
+            <records>false</records>
+            <pojos>true</pojos>
+            <pojosToString>false</pojosToString>
+            <javaTimeTypes>true</javaTimeTypes>
+            <!-- 使用 Java 8 的 LocalDateTime -->
+            <jpaAnnotations>true</jpaAnnotations>
+            <jpaVersion>2.2</jpaVersion>
+            <validationAnnotations>true</validationAnnotations>
+            <springAnnotations>true</springAnnotations>
+            <globalObjectReferences>false</globalObjectReferences>
+        </generate>
+    </generator>
+</configuration>
