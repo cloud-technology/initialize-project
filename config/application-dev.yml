@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC&useLegacyDatetimeCode=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: user1
+    password: pw123456
+    hikari:
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+  flyway:
+    schemas:
+    - testdb
+    default-schema: testdb
+    url: jdbc:mysql://127.0.0.1:3306
+    user: root
+    password: pw123456
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+logging:
+  level:
+    root: info
+    com.example.demo: debug

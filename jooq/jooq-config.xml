@@ -20,8 +20,8 @@
             <excludes>flyway_schema_history</excludes>
         </database>
         <target>
-            <packageName>com.example.demo.enterprise.domain</packageName>
-            <directory>./src/main/java</directory>
+            <packageName>com.example.demo.boundedcontext.domain</packageName>
+            <directory>./jooq/generator</directory>
         </target>
         <generate>
             <records>false</records>

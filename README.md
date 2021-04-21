@@ -2,269 +2,38 @@
 Initialize project &amp; git commit style
 
 # Development Environment
+[Set up your development environment]()
 
-## Local Development tools
-- [Docker](https://docs.docker.com/engine/install/)  
-- [Docker Compose](https://docs.docker.com/compose/install/)  
-- JDK 11  
-  1. [AdoptOpenJDK](https://adoptopenjdk.net/)  
-  2. [Community builds using source code from OpenJDK project](https://github.com/ojdkbuild/ojdkbuild)  
-  3. [Amazon Corretto](https://aws.amazon.com/tw/corretto/)  
-  4. [sdkman](https://sdkman.io/install)  
-     [方便管理JDK版本工具sdkman](https://blog.samzhu.dev/2020/12/13/%E6%96%B9%E4%BE%BF%E7%AE%A1%E7%90%86JDK%E7%89%88%E6%9C%AC%E5%B7%A5%E5%85%B7sdkman/)  
+# 優雅的提交你的 Git Commit Message
+[Git Commit Message Format & Lint]()
 
-## Local IDE - VSCode
-[VSCode](https://code.visualstudio.com/)  
-- [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)  
-- [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)  
-- [Lombok Annotations Support for VS Code](https://marketplace.visualstudio.com/items?itemName=GabrielBB.vscode-lombok)  
-
-## Cloud IDE - Gitpod
-[Gitpod](https://www.gitpod.io/)  
-- [Gitpod - Dev Environments in a Browser Tab](https://chrome.google.com/webstore/detail/gitpod-dev-environments-i/dodmmooeoklaejobgleioelladacbeki)  
-
-# 下載專案模板
-[start.spring.io](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.4.4.RELEASE&packaging=jar&jvmVersion=11&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=web,native,data-rest,data-jpa,mysql,flyway,validation,actuator,lombok,prometheus,cloud-starter-sleuth,testcontainers,restdocs,cloud-contract-verifier,cloud-contract-stub-runner,cloud-feign)  
+# Download project template
+[start.spring.io](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.4.5.RELEASE&packaging=jar&jvmVersion=11&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=web,native,data-rest,data-jpa,mysql,flyway,validation,actuator,lombok,prometheus,cloud-starter-sleuth,testcontainers,restdocs,cloud-contract-verifier,cloud-contract-stub-runner,cloud-feign)  
 
 # 調整 .gitignore
-可參考此專案的 .gitignore  
-
-Spting 設定檔部分只上傳開發環境使用 & 有用到通訊加密兩種配置的設定檔 如下
-``` .gitignore
-!**/application-dev.yml
-!**/application-dev-secret.yml
-```
-
-# Coding style
-使用 [spotless](https://github.com/diffplug/spotless/tree/main/plugin-gradle), 
-build.gradle 增加 plugins 跟配置
-``` groovy
-plugins {
-	id 'com.diffplug.spotless' version '5.11.1'
-}
-
-spotless {
-	encoding 'UTF-8' // all formats will be interpreted as UTF-8
-	java {
-		target 'src/*/java/**/*.java'
-		removeUnusedImports()
-		importOrder()
-		googleJavaFormat()
-	}
-	sql {
-		target 'src/main/resources/**/*.sql'
-	}
-	groovyGradle {
-		target '*.gradle'
-		greclipse()
-	}
-}
-```
-
-gradle 指令
-``` bash
-# 編譯時期會先檢查
-./gradlew build
-# 依照指定方式格式化
-./gradlew spotlessApply
-```
-
-# Git Commit Message Format
-[Angular Commit Message Format](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)  
-[GitGuide](https://zjdoc-gitguide.readthedocs.io/zh_CN/latest/)  
-[Understanding Semantic Commit Messages Using Git and Angular](https://nitayneeman.com/posts/understanding-semantic-commit-messages-using-git-and-angular/)  
-  
-## Commit Message Format
-```
-<header>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
-
-## Commit Message Header
-[Commit Message Header](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit-message-header)
-```
-<type>(<scope>): <short summary>
-  │       │             │
-  │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
-  │       │
-  │       └─⫸ Commit Scope: animations|bazel|benchpress|common|compiler|compiler-cli|core|
-  │                          elements|forms|http|language-service|localize|platform-browser|
-  │                          platform-browser-dynamic|platform-server|router|service-worker|
-  │                          upgrade|zone.js|packaging|changelog|dev-infra|docs-infra|migrations|
-  │                          ngcc|ve
-  │
-  └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
-```
-
-### Type
-Must be one of the following:  
-  
-- build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-- ci: Changes to our CI configuration files and scripts (example scopes: Circle, BrowserStack, SauceLabs)
-- docs: Documentation only changes
-- feat: A new feature
-- fix: A bug fix
-- perf: A code change that improves performance
-- refactor: A code change that neither fixes a bug nor adds a feature
-- test: Adding missing tests or correcting existing tests
-
-### Scope
-The scope should be the name of the npm package affected (as perceived by the person reading the changelog generated from commit messages).  
-  
-The following is the list of supported scopes:  
-  
-- animations
-- bazel
-- benchpress
-- common
-- compiler
-- compiler-cli
-- core
-- elements
-- forms
-- http
-- language-service
-- localize
-- platform-browser
-- platform-browser-dynamic
-- platform-server
-- router
-- service-worker
-- upgrade
-- zone.js
-
-### Summary
-Use the summary field to provide a succinct description of the change:  
-
-use the imperative, present tense: "change" not "changed" nor "changes"  
-don't capitalize the first letter  
-no dot (.) at the end  
-
-## Commit Message Body
-[Commit Message Body](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit-message-body)  
-Just as in the summary, use the imperative, present tense: "fix" not "fixed" nor "fixes".  
-
-Explain the motivation for the change in the commit message body. This commit message should explain why you are making the change. You can include a comparison of the previous behavior with the new behavior in order to illustrate the impact of the change.  
-  
-Example:  
-```
-More detailed explanatory text, if necessary.  Wrap it to 
-about 72 characters or so. 
-
-Further paragraphs come after blank lines.
-
-- Bullet points are okay, too
-- Use a hanging indent
-```
-
-## Commit Message Footer
-[Commit Message Footer](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit-message-footer)  
-The footer can contain information about breaking changes and is also the place to reference GitHub issues, Jira tickets, and other PRs that this commit closes or is related to.  
-  
-Example:  
-```
-BREAKING CHANGE: isolate scope bindings definition has changed.
-
-    To migrate the code follow the example below:
-    Before:
-
-    scope: {
-      myAttr: 'attribute',
-    }
-
-    After:
-
-    scope: {
-      myAttr: '@',
-    }
-
-    The removed `inject` wasn't generaly useful for directives so there should be no code using it.
-```
-or
-```
-Closes #123, #245, #992
-```
-
-## Revert commits
-[Revert commits](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#revert-commits)
-Example:
-```
-revert: feat(pencil): add 'graphiteWidth' option
-
-This reverts commit 667ecc1654a317a13331b17617d973392f415f02.
-```
-
-更多範例  
-[阮一峰的网络日志 -Commit message 和 Change log 编写指南](https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html)  
-[Git Commit Message 這樣寫會更好，替專案引入規範與範例](https://wadehuanglearning.blogspot.com/2019/05/commit-commit-commit-why-what-commit.html)  
-
-# Add git commit template
-使用指令
-``` bash
-cat << 'EOF' > $HOME/.gitmessage.txt
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-EOF
-
-git config --global commit.template $HOME/.gitmessage.txt
-```
-其他工具輔助  
-[IntelliJ - Git Commit Template](https://plugins.jetbrains.com/plugin/9861-git-commit-template)  
-
-# Add git hook 自動化檢查或格式化
-## 使用指令
-``` bash
-cat << 'EOF' > .git/hooks/pre-commit
-#!/bin/bash
-
-PWD=`pwd`
-
-globalEmail=`git config --global --get user.email`
-
-echo "Global commit email: "$globalEmail""
-exit 0
-EOF
-
-chmod +x .git/hooks/pre-commit
-```
-
-## commitlint
-[commitlint](https://github.com/conventional-changelog/commitlint#readme), [config-angular](https://www.npmjs.com/package/@commitlint/config-angular)  
-  
-Install test  
-``` bash
-npm install -g @commitlint/config-angular @commitlint/cli
-echo "module.exports = {extends: ['@commitlint/config-angular']};" > commitlint.config.js
-
-echo "foo: some message" | npx commitlint # fails
-echo "fix: some message" | npx commitlint # passes
-```
-
-Uninstall
-``` bash
-npm uninstall -g @commitlint/config-angular @commitlint/cli
-```
+可參考此專案的 [.gitignore]()  
 
 # Project directory
 ``` bash
 # 需要上傳至 git
 touch src/main/resources/.gitkeep
+touch src/test/resources/.gitkeep
+```
 
-# Springboot 使用設定檔(不會包到 jar 檔中)
+Springboot 使用設定檔(不會包到 jar 檔中)
+``` bash
 mkdir config
 touch config/application-dev.yml
 touch config/application-dev-secret.yml
+```
 
-# 說明文件
+說明文件
+``` bash
 mkdir docs
+```
 
-# 外部開發資源
+外部開發資源
+``` bash
 mkdir docker
 cat << 'EOF' > docker/docker-compose.yml
 version: '3.9'
@@ -288,14 +57,46 @@ services:
 EOF
 ```
 
-# DB 版控
-[Microservice Architecture Pattern: Database per service](https://microservices.io/patterns/data/database-per-service.html)
+Spring 設定檔部分只上傳開發環境使用 & 有用到通訊加密兩種配置的設定檔 如下
+``` .gitignore
+!**/application-dev.yml
+!**/application-dev-secret.yml
+```
 
-## 建立 projecttion 對應的 Table
-[src/main/resources/db/migration/V20210417.0__basic_schema.sql](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/resources/db/migration/V1.0.0__basic_schema.sql)
+# Coding style
+使用 [spotless](https://github.com/diffplug/spotless/tree/main/plugin-gradle), 
+build.gradle 增加 plugins 跟配置
+``` groovy
+plugins {
+	id 'com.diffplug.spotless' version '5.11.1' // https://github.com/diffplug/spotless/tree/main/plugin-gradle
+}
 
-## 需要的管理表
-[src/main/resources/db/migration/V20210418.1__add_order_schema.sql](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/resources/db/migration/V1.1.0__axon_schema.sql)
+spotless {
+	encoding 'UTF-8' // all formats will be interpreted as UTF-8
+	java {
+		target 'src/*/java/**/*.java'
+		removeUnusedImports()
+		importOrder()
+		googleJavaFormat()
+	}
+	sql {
+		target 'src/**/*.sql'
+    // dbeaver()
+	}
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
+}
+```
+
+gradle 指令
+``` bash
+# 編譯時期會先檢查
+./gradlew build
+# 依照指定方式格式化
+./gradlew spotlessApply
+```
 
 # 建立需要的設定檔
 src/main/resources/application.yml
@@ -308,33 +109,144 @@ spring:
     - dev
 ```
 
-# 使用 jooq 產生 JPA
-下載 [jooq](https://www.jooq.org/download/)  
+config/application-dev.yml
+``` yml
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC&useLegacyDatetimeCode=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: user1
+    password: pw123456
+    hikari:
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
+  flyway:
+    schemas:
+    - testdb
+    default-schema: testdb
+    url: jdbc:mysql://127.0.0.1:3306
+    user: root
+    password: pw123456
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
 
-## 起動需要的 Mysql
-``` bash
-docker-compose -f docker/docker-compose.yml up -d
+logging:
+  level:
+    root: info
+    com.example.demo: debug
 ```
 
-## 啟動APP
-透過 flyway 建立 DB Table 結束後停止 application
+# Package structure
+Domain-Driven Design and the Hexagonal Architecture
+```plantuml
+@startuml
+skinparam componentStyle uml2
+skinparam component {
+  BorderColor #grey
+  BackgroundColor #white
+}
 
-## 設定 Jooq
-需要額外的依賴  
-[JAXB API » 2.3.1](https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api/2.3.1)  
+package "infrastructure" {
+  [repositories]
+}
 
-## 執行 jooq 產生器
-``` bash
-java -cp jooq/jOOQ-lib/*:jooq/3rd-lib/*:jooq/db-lib/* org.jooq.codegen.GenerationTool jooq/jooq-config.xml
+package "interfaces" {
+  [rest]
+}
+
+package "application" {
+  [commandgateways]
+  [querygateways]
+}
+
+package "domain" {
+  [aggregates]
+}
+
+[repositories] --> [rest]
+[rest] --> [commandgateways]
+[repositories] --> [querygateways]
+[repositories] --> [aggregates]
+[commandgateways] --> [aggregates]
+[querygateways] --> [aggregates]
+
+@enduml
 ```
-產出的 entity 在此  
-src/main/java/com/example/demo/enterprise/domain/tables/pojos
 
-## 移除用不到的 Jooq 程式碼
+## 建立 service 共用 package
 ``` bash
-rm src/main/java/com/example/demo/enterprise/domain/tables/*.java
-rm src/main/java/com/example/demo/enterprise/domain/*.java
+export BasePackage=src/main/java/com/example/demo
+mkdir -p ${BasePackage}/configuration
+mkdir -p ${BasePackage}/exceptions
+mkdir -p ${BasePackage}/shareddomain
 ```
 
+## 建立 Bounded Context package
+舉例是購物車服務 cart + ms(代稱)
+``` bash
+export BoundedContext=cartms
+mkdir -p ${BasePackage}/${BoundedContext}
+# 應用層
+mkdir -p ${BasePackage}/${BoundedContext}/application/internal
+mkdir -p ${BasePackage}/${BoundedContext}/application/internal/commandgateways
+mkdir -p ${BasePackage}/${BoundedContext}/application/internal/querygateways
+mkdir -p ${BasePackage}/${BoundedContext}/application/internal/sagamanagers
+mkdir -p ${BasePackage}/${BoundedContext}/application/internal/outboundservices
 
+# 領域層
+mkdir -p ${BasePackage}/${BoundedContext}/domain
+mkdir -p ${BasePackage}/${BoundedContext}/domain/model/aggregates
+mkdir -p ${BasePackage}/${BoundedContext}/domain/model/entites
+mkdir -p ${BasePackage}/${BoundedContext}/domain/model/valueobjects
+mkdir -p ${BasePackage}/${BoundedContext}/domain/commands
+mkdir -p ${BasePackage}/${BoundedContext}/domain/events
+mkdir -p ${BasePackage}/${BoundedContext}/domain/queries
+mkdir -p ${BasePackage}/${BoundedContext}/domain/projecttions
+mkdir -p ${BasePackage}/${BoundedContext}/domain/queryhandlers
 
+# 基礎層
+mkdir -p ${BasePackage}/${BoundedContext}/infrastructure
+mkdir -p ${BasePackage}/${BoundedContext}/infrastructure/repositories
+mkdir -p ${BasePackage}/${BoundedContext}/infrastructure/brokers
+
+# 介面層
+mkdir -p ${BasePackage}/${BoundedContext}/interfaces
+mkdir -p ${BasePackage}/${BoundedContext}/interfaces/transform
+mkdir -p ${BasePackage}/${BoundedContext}/interfaces/rest/dto
+mkdir -p ${BasePackage}/${BoundedContext}/interfaces/eventhandlers
+```
+
+# 進行架構驗證
+1. Add library
+build.gradle add archunit library
+``` groovy
+testImplementation 'com.tngtech.archunit:archunit:0.18.0'
+```
+
+2. Architecture rule validation
+[src/test/java/com/example/demo/DemoApplicationTests.java](src/test/java/com/example/demo/DemoApplicationTests.java)
+
+# DB 版控
+[Microservice Architecture Pattern: Database per service](https://microservices.io/patterns/data/database-per-service.html)  
+
+透過版控管理 對應的 Table Schema
+[src/main/resources/db/migration/V2021.0.1__basic_schema.sql](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/resources/db/migration/V1.0.0__basic_schema.sql)
+
+# 設定 Swagger OpenAPI
+
+1. 增加需要的套件
+build.gradle
+``` gradle
+// Swagger
+implementation 'io.springfox:springfox-boot-starter:3.0.0'
+implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+implementation 'io.springfox:springfox-data-rest:3.0.0'
+```
+
+2. 增加 Swagget Config
+參考[OpenAPIConfig.java]()  

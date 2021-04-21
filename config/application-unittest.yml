@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+  flyway:
+    schemas:
+    - testdb
+    default-schema: testdb
+    locations:
+    - classpath:db/migration
+    - classpath:db/mockData
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+logging:
+  level:
+    root: info
+    com.example.demo: debug

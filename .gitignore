@@ -44,10 +44,12 @@ bin
 **/application-*.yml
 !**/application-dev.yml
 !**/application-dev-secret.yml
+!**/application-unittest.yml
 
 **/application-*.properties
 !**/application-dev.properties
 !**/application-dev-secret.properties
+!**/application-unittest.properties
 
 # build #
 /src/asciidoc/build
@@ -58,3 +60,5 @@ bin
 
 # Mac #
 .DS_Store
+
+backup
