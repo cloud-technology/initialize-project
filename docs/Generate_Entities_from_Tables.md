@@ -105,7 +105,7 @@ export BoundedContext=cartms
 mkdir -p ${BasePackage}/${BoundedContext}/infrastructure/repositories
 ```
 
-新增 EnterpriseMainRepository.java
+新增 CartRepository.java
 ``` bash
 cat << EOF > ${BasePackage}/${BoundedContext}/infrastructure/repositories/CartRepository.java
 package com.example.demo.cartms.infrastructure.repositories;

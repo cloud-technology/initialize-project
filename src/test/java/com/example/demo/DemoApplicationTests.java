@@ -3,7 +3,7 @@ package com.example.demo;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-import com.example.demo.cartms.interfaces.rest.dto.CartInfoDto;
+import com.example.demo.shareddomain.dto.CartInfoDto;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
