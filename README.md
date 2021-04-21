@@ -235,6 +235,11 @@ ex: cat-mid-cl-enterprise
 # Development Environment
 [Set up your development environment](https://github.com/cloud-technology/initialize-project/blob/main/docs/Development_Environment.md)
 
+# 開發流程
+開發流程採用 [GitHub flow](https://guides.github.com/introduction/flow/) 進行快速迭代  
+**References**   
+[Gitflow](https://www.thoughtworks.com/radar/techniques/long-lived-branches-with-gitflow)
+
 # 優雅的提交你的 Git Commit Message
 [Git Commit Message Format & Lint](https://github.com/cloud-technology/initialize-project/blob/main/docs/Git-Commit.md)
 
@@ -527,7 +532,11 @@ public class AddCartProductDto {
 }
 ```
 
-
+# Testcontainers for unittest
+[Testcontainers](https://www.testcontainers.org/)  
+  
+範例程式  
+[src/test/java/com/example/demo/DemoApplicationTests.java(get_cart_test)](https://github.com/cloud-technology/initialize-project/blob/main/src/test/java/com/example/demo/DemoApplicationTests.java)
 
 
 
