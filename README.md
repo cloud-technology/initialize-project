@@ -73,6 +73,7 @@ ex: cat-mid-cl-enterprise
 | Methods         | - Methods should be verbs - Camel Case with first letter lowercase                                                                                                                                                                | public void receive(); private OrderEvent createOrderEvent();                   |
 | Variables       | - Except for variables, all instance, class, and class constants are in mixed case with a lowercase first letter.  <br> - Variable names should not start with underscore _ or dollar sign $ characters, even though both are allowed. | Order order; InventoryCheckEvent event;                                         |
 | Constants       | All uppercase with words separated by underscores ("_")       
+
 **References**  
 [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 
