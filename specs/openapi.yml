@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: cart service
+  version: 1.0.0
+  description: 購物車服務
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: samzhu
+    url: 'https://blog.samzhu.dev/'
+    email: spike19820318@gmail.com
+servers:
+  - url: 'http://{domain}:{port}'
+    description: 伺服器URL
+    variables:
+      domain:
+        default: localhost
+        description: 開發環境
+      port:
+        default: '8080'
+        description: 開發環境
+paths:
+  /cart:
+    post:
+      summary: 建立購物車
+      operationId: post-orders
+      description: 建立購物車
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartCreateDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartVo'
+      tags:
+        - Cart
+    parameters: []
+components:
+  schemas:
+    ErrorMessage:
+      title: Root Type for ErrorMessage
+      description: 錯誤訊息
+      type: object
+      example:
+        timestamp: '2020-11-23T02:20:45.938+00:00'
+        status: 401
+        error: Unauthorized
+        message: 未授權存取
+        path: /employees
+        errors:
+          - defaultMessage: 值 需介於 1 到 2 之間
+            objectName: createDto
+            field: accessLimit
+            rejectedValue: 3
+            bindingFailure: false
+            code: Range
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        status:
+          format: int32
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorMessageDetail'
+    ErrorMessageDetail:
+      title: Root Type for ErrorMessageDetail
+      description: 錯誤明細
+      type: object
+      properties:
+        defaultMessage:
+          type: string
+        objectName:
+          type: string
+        field:
+          type: string
+        rejectedValue:
+          format: int32
+          type: integer
+        bindingFailure:
+          type: boolean
+        code:
+          type: string
+      example:
+        defaultMessage: 值 需介於 1 到 2 之間
+        objectName: createDto
+        field: accessLimit
+        rejectedValue: 3
+        bindingFailure: false
+        code: Range
+    CartCreateDto:
+      title: CartCreateDto
+      type: object
+      description: 購物車建立傳輸物件
+      properties:
+        customerName:
+          type: string
+          description: 消費者姓名
+          example: Sam
+    CartVo:
+      title: CartVo
+      type: object
+      description: 購物車檢視物件
+      properties:
+        cart_number:
+          type: string
+          description: 購物車編號
+          example: '1243534364'
+          maxLength: 60
+        customer_name:
+          type: string
+          description: 客戶名稱
+          example: Sam
+        total_amount:
+          type: integer
+          description: 金額
+        products:
+          type: array
+          description: 選購的商品
+          items:
+            $ref: '#/components/schemas/CartProductVo'
+      required:
+        - cart_number
+        - total_amount
+    CartProductVo:
+      title: CartProductVo
+      type: object
+      description: 購物車商品檢視物件
+      properties:
+        id:
+          type: string
+          description: 流水編號
+          example: '0001'
+        productId:
+          type: string
+          description: 商品編號
+          example: '123'
+        productName:
+          type: string
+          description: 商品名稱
+        subtotalAmount:
+          type: string
+          description: 小計金額
+      required:
+        - id
+        - productId
+        - productName
+        - subtotalAmount
+  responses:
+    ErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: 錯誤通用回覆
+  securitySchemes:
+    JWT:
+      scheme: bearer
+      type: http
+      description: JWT 格式 Token
+  parameters:
+    cartId:
+      name: cartId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: '21325545'
+        maxLength: 60
+      description: 購物車編號
+security:
+  - JWT: []
+tags:
+  - name: Cart

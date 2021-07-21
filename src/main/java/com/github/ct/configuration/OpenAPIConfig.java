@@ -1,4 +1,5 @@
-package com.example.demo.configuration;
+package com.github.ct.configuration;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,12 +35,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @EnableOpenApi
 @Configuration
-@Profile("dev")
+@Profile({"dev", "unittest"})
 public class OpenAPIConfig {
 
   private static final String TITLE = "Init project Demo";
   private static final String DESCRIPTION = "Quickly complete the initial project setup";
-  private static final String VERSION = "1.0.0";
+  private static final String VERSION = "1.0.1";
   private static final String TERMS_OF_SERVICE_URL = "";
   private static final String LICENSE = "Apache 2.0";
   private static final String LICENSE_URL = "https://www.apache.org/licenses/LICENSE-2.0";
@@ -150,7 +151,7 @@ public class OpenAPIConfig {
                                                             qualifiedModelNameBuilder
                                                                 .name("ErrorMsg")
                                                                 .namespace(
-                                                                    "com.example.demo.shareddomain.dto")
+                                                                    "com.cathay.wmsp.shareddomain.dto")
                                                                 .build())
                                                     .build())
                                         .build())

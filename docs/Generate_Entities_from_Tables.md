@@ -6,13 +6,13 @@
 下載額外的依賴  
 [JAXB API » 2.3.1](https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api/2.3.1) 放到 jooq/3rd-lib
 
-## 起動需要的 Mysql
+## 起動需要的資料庫
 ``` bash
 docker-compose -f docker/docker-compose.yml up -d
 ```
 
 ## 啟動APP
-透過 flyway 建立 DB Table 結束後停止 application
+透過 Database Migration Tool 建立 DB Table 結束後停止 application
 
 ## 執行 jooq 產生器
 ``` bash

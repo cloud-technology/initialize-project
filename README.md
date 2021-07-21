@@ -1,5 +1,5 @@
 # initialize-project
-Initialize project &amp; git commit style
+Initialize project
 
 # system architecture diagram
 ```plantuml
@@ -7,8 +7,8 @@ Initialize project &amp; git commit style
 title system architecture diagram
 agent Browser
 queue EventStream
-database Redis as Cache
-database MySQL as RDS
+database Cache as Cache1
+database RDBMS as RDBMS
 
 left to right direction
 frame MiddlePlatform {
@@ -37,14 +37,15 @@ Browser --> BFF
 
 BFF --> CompositeService1
 BFF --> CompositeService2
-BFF - Cache
+BFF -> Cache1
 
 CompositeService1 --> BaseService1
 CompositeService1 --> BaseService2
 
-CompositeService2 -> RDS
+CompositeService2 -> RDBMS
 CompositeService2 <-> EventStream
 CompositeService1 <-> EventStream 
+
 
 BaseService1 --> On_premises_API
 
@@ -182,7 +183,7 @@ ex: cat-mid-cl-enterprise
 <td>
   
   ```java
-  logger.debug("Logged in user: {}, accessToken：{}", 
+  logger.info("Logged in user: {}, accessToken：{}", 
       user.getName(), token);
   ```
 </td>
@@ -234,18 +235,25 @@ ex: cat-mid-cl-enterprise
 [Web API 設計](https://docs.microsoft.com/zh-tw/azure/architecture/best-practices/api-design)
 
 # Development Environment
-[Set up your development environment](https://github.com/cloud-technology/initialize-project/blob/main/docs/Development_Environment.md)
+[Set up your development environment](https://github.com/cloud-technology/initialize-project/blob/main/docs/Development_Environment.md)  
+  
+or 使用 [VS Code Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)本機只需 Docker  & VSCode
 
 # 開發流程
-開發流程採用 [GitHub flow](https://guides.github.com/introduction/flow/) 進行快速迭代  
-**References**   
-[Gitflow](https://www.thoughtworks.com/radar/techniques/long-lived-branches-with-gitflow)
+開發流程推薦採用 [GitHub flow](https://guides.github.com/introduction/flow/) 進行快速迭代  
+**References**  
+Why not use Gitflow?  
+[Long-lived branches with Gitflow By thoughtworks](https://www.thoughtworks.com/radar/techniques/long-lived-branches-with-gitflow)  
+[A successful Git branching model By Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/)  
 
 # 優雅的提交你的 Git Commit Message
-[Git Commit Message Format & Lint](https://github.com/cloud-technology/initialize-project/blob/main/docs/Git-Commit.md)
+[約定式提交](https://www.conventionalcommits.org/zh-hant/v1.0.0/)  
+[透過工具建立有規範的 git commit message 吧](https://pjchender.blogspot.com/2021/07/git-commit-message.html)  
+[我是怎么写 Git Commit message 的？](https://mp.weixin.qq.com/s/PuYEiaI4T3VFJMhi-_qQ8w)
+[Git Commit Message Format & Lint](https://github.com/cloud-technology/initialize-project/blob/main/docs/Git-Commit.md)  
 
 # Download project template
-[start.spring.io](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.4.5.RELEASE&packaging=jar&jvmVersion=11&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=web,native,data-rest,data-jpa,mysql,flyway,validation,actuator,lombok,prometheus,cloud-starter-sleuth,testcontainers,restdocs,cloud-contract-verifier,cloud-contract-stub-runner,cloud-feign)  
+[start.spring.io](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.5.2.RELEASE&packaging=jar&jvmVersion=11&groupId=com.github.cloud-technology&artifactId=cart&name=cart&description=Demo%20project%20for%20Spring%20Boot&packageName=com.github.ct&dependencies=web,data-rest,data-jpa,validation,actuator,lombok,prometheus,cloud-starter-sleuth,testcontainers,cloud-feign,liquibase,postgresql)  
 
 # 調整 .gitignore
 可參考此專案的 [.gitignore](https://github.com/cloud-technology/initialize-project/blob/main/.gitignore)  
@@ -262,6 +270,7 @@ Springboot 使用設定檔(不會包到 jar 檔中)
 mkdir config
 touch config/application-dev.yml
 touch config/application-dev-secret.yml
+touch config/application-unittest.yml
 ```
 
 說明文件
@@ -273,31 +282,41 @@ mkdir docs
 ``` bash
 mkdir docker
 cat << 'EOF' > docker/docker-compose.yml
-version: '3.9'
+version: '3.8'
 services:
-  mysql:
-    image: 'mysql:8.0.23'
+  postgres:
+    image: 'postgres:13.3'
     restart: always
-    command: '--default-authentication-plugin=mysql_native_password'
     ports:
-      - '3306:3306'
+      - '5432:5432'
     environment:
-      MYSQL_ROOT_PASSWORD: 'pw123456'
-      MYSQL_DATABASE: 'testdb'
-      MYSQL_USER: 'user1'
-      MYSQL_PASSWORD: 'pw123456'
+      POSTGRES_USER: 'user1'
+      POSTGRES_PASSWORD: 'pw123456'
+      POSTGRES_DB: 'testdb'
+    # volumes:
+    #   - dbData:/var/lib/postgresql/data
+    networks:
+      - privateBridge
     logging:
       driver: json-file
       options:
         max-size: 20m
         max-file: '2'
+
+# volumes:
+#   dbData:
+
+networks:
+  privateBridge:
+    driver: bridge
 EOF
 ```
 
-Spring 設定檔部分只上傳開發環境使用 & 有用到通訊加密兩種配置的設定檔 如下
+Spring 設定檔部分只上傳開發環境使用 & 有用到通訊加密 以及單元測試 三種配置的設定檔 如下
 ``` .gitignore
 !**/application-dev.yml
 !**/application-dev-secret.yml
+!**/application-unittest.yml
 ```
 
 # Coding style
@@ -312,9 +331,12 @@ spotless {
 	encoding 'UTF-8' // all formats will be interpreted as UTF-8
 	java {
 		target 'src/**/*.java'
+		toggleOffOn()
+		googleJavaFormat()
 		removeUnusedImports()
 		importOrder()
-		googleJavaFormat()
+		trimTrailingWhitespace()
+		endWithNewline()
 	}
 	sql {
 		target 'src/**/*.sql'
@@ -323,6 +345,10 @@ spotless {
 	groovyGradle {
 		target '*.gradle'
 		greclipse()
+	}
+	format 'xml', {
+		target 'src/**/*.xml'
+		eclipseWtp('xml')
 	}
 }
 ```
@@ -340,7 +366,10 @@ src/main/resources/application.yml
 ``` yml
 spring:
   application:
-    name: initialize-project
+    name: cart
+  liquibase:
+    enabled: true
+    change-log: classpath:db/main.xml
   profiles:
     active:
     - dev
@@ -349,24 +378,19 @@ spring:
 config/application-dev.yml
 ``` yml
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/testdb?currentSchema=public
+    username: user1
+    password: pw123456
+  jpa:
+    show-sql: true
+  sql:
+    init:
+      mode: never
   main:
     cloud-platform: kubernetes
     banner-mode: off 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC&useLegacyDatetimeCode=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: user1
-    password: pw123456
-    hikari:
-      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
-  flyway:
-    url: jdbc:mysql://127.0.0.1:3306
-    user: root
-    password: pw123456
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: false
 
 server:
   shutdown: graceful # 優雅下線
@@ -377,7 +401,7 @@ server:
 logging:
   level:
     root: info
-    com.example.demo: debug
+    com.github.ct: debug
 
 management:
   server:
@@ -442,16 +466,17 @@ package "domain" {
 
 ## 建立 service 共用 package
 ``` bash
-export BasePackage=src/main/java/com/example/demo
+export BasePackage=src/main/java/com/github/ct
 mkdir -p ${BasePackage}/configuration
 mkdir -p ${BasePackage}/exceptions
 mkdir -p ${BasePackage}/shareddomain
 ```
 
 ## 建立 Bounded Context package
-舉例是購物車服務 cart + ms(代稱)
+舉例是購物車服務 cart
 ``` bash
-export BoundedContext=cartms
+export BasePackage=src/main/java/com/github/ct
+export BoundedContext=cart
 mkdir -p ${BasePackage}/${BoundedContext}
 # 應用層
 mkdir -p ${BasePackage}/${BoundedContext}/application/internal
@@ -459,6 +484,7 @@ mkdir -p ${BasePackage}/${BoundedContext}/application/internal/commandgateways
 mkdir -p ${BasePackage}/${BoundedContext}/application/internal/querygateways
 mkdir -p ${BasePackage}/${BoundedContext}/application/internal/sagamanagers
 mkdir -p ${BasePackage}/${BoundedContext}/application/internal/outboundservices
+mkdir -p ${BasePackage}/${BoundedContext}/application/internal/queryhandlers
 
 # 領域層
 mkdir -p ${BasePackage}/${BoundedContext}/domain
@@ -469,7 +495,6 @@ mkdir -p ${BasePackage}/${BoundedContext}/domain/commands
 mkdir -p ${BasePackage}/${BoundedContext}/domain/events
 mkdir -p ${BasePackage}/${BoundedContext}/domain/queries
 mkdir -p ${BasePackage}/${BoundedContext}/domain/projecttions
-mkdir -p ${BasePackage}/${BoundedContext}/domain/queryhandlers
 
 # 基礎層
 mkdir -p ${BasePackage}/${BoundedContext}/infrastructure
@@ -496,8 +521,11 @@ testImplementation 'com.tngtech.archunit:archunit:0.18.0'
 # DB 版控
 [Microservice Architecture Pattern: Database per service](https://microservices.io/patterns/data/database-per-service.html)  
 
-透過版控管理 對應的 Table Schema
-[src/main/resources/db/migration/V2021.0.1__basic_schema.sql](https://github.com/cloud-technology/initialize-project/blob/main/src/main/resources/db/migration/V2021.0.1__basic_schema.sql)
+透過版控管理 對應的 Table Schema  
+[Use Liquibase to Safely Evolve Your Database Schema](https://blog.samzhu.dev/2021/06/10/Use-Liquibase-to-Safely-Evolve-Your-Database-Schema/)  
+
+# 產出 Entity
+[Use jOOQ generation JPA entity](https://github.com/cloud-technology/initialize-project/blob/main/docs/Generate_Entities_from_Tables.md)
 
 # 設定 Swagger OpenAPI
 
@@ -538,10 +566,4 @@ public class AddCartProductDto {
   
 範例程式  
 [src/test/java/com/example/demo/DemoApplicationTests.java(get_cart_test)](https://github.com/cloud-technology/initialize-project/blob/main/src/test/java/com/example/demo/DemoApplicationTests.java)
-
-
-
-
-
-
 

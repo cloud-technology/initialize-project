@@ -1,18 +1,27 @@
-version: '3.9'
+version: '3.8'
 services:
-  mysql:
-    image: 'mysql:8.0.23'
+  postgres:
+    image: 'postgres:13.3'
     restart: always
-    command: '--default-authentication-plugin=mysql_native_password'
     ports:
-      - '3306:3306'
+      - '5432:5432'
     environment:
-      MYSQL_ROOT_PASSWORD: 'pw123456'
-      MYSQL_DATABASE: 'testdb'
-      MYSQL_USER: 'user1'
-      MYSQL_PASSWORD: 'pw123456'
+      POSTGRES_USER: 'user1'
+      POSTGRES_PASSWORD: 'pw123456'
+      POSTGRES_DB: 'testdb'
+    # volumes:
+    #   - dbData:/var/lib/postgresql/data
+    networks:
+      - privateBridge
     logging:
       driver: json-file
       options:
         max-size: 20m
         max-file: '2'
+
+# volumes:
+#   dbData:
+
+networks:
+  privateBridge:
+    driver: bridge

@@ -1,0 +1,86 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+	<changeSet author="samzhu (generated)" id="1626775198366-1">
+		<createTable tableName="cart">
+			<column name="cart_number" remarks="購物車編號" type="VARCHAR(60)">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="cart_pkey" />
+			</column>
+			<column name="customer_name" remarks="客戶名稱" type="VARCHAR(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="total_amount" remarks="金額" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="current_version" remarks="版本號" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_by" remarks="建立者" type="VARCHAR(60)">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_date" remarks="建立時間"
+				type="TIMESTAMP WITHOUT TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_modified_by" remarks="最後異動者"
+				type="VARCHAR(60)">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_modified_date" remarks="最後異動時間"
+				type="TIMESTAMP WITHOUT TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="samzhu (generated)" id="1626775198366-2">
+		<createTable remarks="購物車商品" tableName="cart_product">
+			<column name="id" remarks="流水編號" type="VARCHAR(60)">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="cart_product_pkey" />
+			</column>
+			<column name="cart_number" remarks="購物車編號" type="VARCHAR(60)">
+				<constraints nullable="false" />
+			</column>
+			<column name="product_id" remarks="商品編號" type="VARCHAR(10)">
+				<constraints nullable="false" />
+			</column>
+			<column name="product_name" remarks="商品名稱" type="VARCHAR(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="subtotal_amount" remarks="小計金額" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="current_version" remarks="版本號" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_by" remarks="建立者" type="VARCHAR(60)">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_date" remarks="建立時間"
+				type="TIMESTAMP WITHOUT TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_modified_by" remarks="最後異動者"
+				type="VARCHAR(60)">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_modified_date" remarks="最後異動時間"
+				type="TIMESTAMP WITHOUT TIME ZONE">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="samzhu (generated)" id="1626775198366-3">
+		<addForeignKeyConstraint
+			baseColumnNames="cart_number" baseTableName="cart_product"
+			constraintName="cart_product_fk" deferrable="false"
+			initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+			referencedColumnNames="cart_number" referencedTableName="cart"
+			validate="true" />
+	</changeSet>
+</databaseChangeLog>

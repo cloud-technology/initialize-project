@@ -1,22 +1,14 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=UTC&useLegacyDatetimeCode=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/testdb?currentSchema=public
     username: user1
     password: pw123456
-    hikari:
-      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
-  flyway:
-    schemas:
-    - testdb
-    default-schema: testdb
-    url: jdbc:mysql://127.0.0.1:3306
-    user: root
-    password: pw123456
   jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: false
+    show-sql: true
+  sql:
+    init:
+      mode: never
   main:
     cloud-platform: kubernetes
     banner-mode: off 
@@ -30,7 +22,7 @@ server:
 logging:
   level:
     root: info
-    com.example.demo: debug
+    com.github.ct: debug
 
 management:
   server:

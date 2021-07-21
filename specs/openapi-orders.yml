@@ -1,0 +1,206 @@
+openapi: 3.0.3
+info:
+  title: order service
+  version: 1.0.0
+  description: 訂單服務
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: samzhu
+    url: 'https://blog.samzhu.dev/'
+    email: spike19820318@gmail.com
+servers:
+  - url: 'http://{domain}:{port}'
+    description: 伺服器URL
+    variables:
+      domain:
+        default: localhost
+        description: 開發環境
+      port:
+        default: '8080'
+        description: 開發環境
+paths:
+  /orders:
+    post:
+      summary: 建立訂單
+      operationId: create-orders
+      description: 建立訂單
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderViewDto'
+      tags:
+        - Order
+components:
+  schemas:
+    ErrorMessage:
+      title: Root Type for ErrorMessage
+      description: 錯誤訊息
+      type: object
+      example:
+        timestamp: '2020-11-23T02:20:45.938+00:00'
+        status: 401
+        error: Unauthorized
+        message: 未授權存取
+        path: /employees
+        errors:
+          - defaultMessage: 值 需介於 1 到 2 之間
+            objectName: createDto
+            field: accessLimit
+            rejectedValue: 3
+            bindingFailure: false
+            code: Range
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        status:
+          format: int32
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorMessageDetail'
+    ErrorMessageDetail:
+      title: Root Type for ErrorMessageDetail
+      description: 錯誤明細
+      type: object
+      properties:
+        defaultMessage:
+          type: string
+        objectName:
+          type: string
+        field:
+          type: string
+        rejectedValue:
+          format: int32
+          type: integer
+        bindingFailure:
+          type: boolean
+        code:
+          type: string
+      example:
+        defaultMessage: 值 需介於 1 到 2 之間
+        objectName: createDto
+        field: accessLimit
+        rejectedValue: 3
+        bindingFailure: false
+        code: Range
+    OrderViewDto:
+      title: OrderViewDto
+      type: object
+      description: 訂單檢視模型
+      properties:
+        orderId:
+          type: string
+          description: 訂單編號
+          maxLength: 60
+        customerName:
+          type: string
+          description: 客戶姓名
+          maxLength: 20
+        totalAmount:
+          type: integer
+          description: 訂單金額
+        goods:
+          type: array
+          description: 商品清單
+          items:
+            $ref: '#/components/schemas/GoodsViewDto'
+      required:
+        - orderId
+        - customerName
+        - totalAmount
+        - goods
+    OrderCreateDto:
+      title: OrderCreateDto
+      type: object
+      description: 建立訂單傳輸物件
+      properties:
+        cartId:
+          type: string
+          description: 購物車ID
+        customerName:
+          type: string
+          description: 客戶姓名
+          maxLength: 20
+        totalAmount:
+          type: integer
+          description: 訂單金額
+        goods:
+          type: array
+          description: 商品清單
+          items:
+            $ref: '#/components/schemas/GoodsViewDto'
+      required:
+        - customerName
+        - totalAmount
+        - goods
+        - cartId
+    GoodsViewDto:
+      title: GoodsViewDto
+      type: object
+      description: Goods object view Data Transfer Object
+      x-examples:
+        example-1:
+          goodsId: '100112012'
+          goodsName: 口罩
+          unitPrice: 100
+          inventory: 5
+      properties:
+        goodsId:
+          type: string
+          description: goods ID
+        goodsName:
+          type: string
+          description: goods name
+        unitPrice:
+          type: integer
+          description: unit price
+        count:
+          type: integer
+          description: 數量
+      required:
+        - goodsId
+        - goodsName
+        - unitPrice
+        - count
+  responses:
+    ErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: 錯誤通用回覆
+  securitySchemes:
+    JWT:
+      scheme: bearer
+      type: http
+      description: JWT 格式 Token
+  parameters:
+    orderId:
+      name: orderId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: 訂單編號
+security:
+  - JWT: []
+tags:
+  - name: Order

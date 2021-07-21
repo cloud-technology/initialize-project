@@ -1,6 +1,9 @@
 spring:
   application:
-    name: initialize-project
+    name: cart
+  liquibase:
+    enabled: true
+    change-log: classpath:db/main.xml
   profiles:
     active:
     - dev

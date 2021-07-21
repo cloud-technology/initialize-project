@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: goods service
+  version: 1.0.0
+  description: |-
+    This is a goods service  
+    Provide price query and inventory management functions
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+  contact:
+    name: samzhu
+    url: 'https://blog.samzhu.dev/'
+    email: spike19820318@gmail.com
+servers:
+  - url: 'http://{domain}:{port}'
+    description: 伺服器URL
+    variables:
+      domain:
+        default: localhost
+        description: 開發環境
+      port:
+        default: '8080'
+        description: 開發環境
+paths:
+  '/goods/{goodsId}':
+    parameters:
+      - $ref: '#/components/parameters/goodsId'
+    get:
+      summary: get goods by ID
+      tags:
+        - Goods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodsViewDto'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+      operationId: get-goods-goodsId
+      description: 取得單一商品
+  '/goods/{goodsId}/inventory':
+    parameters:
+      - $ref: '#/components/parameters/goodsId'
+    patch:
+      summary: Update goods inventory
+      operationId: patch-goods-goodsId-inventory
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodsViewDto'
+      description: 更新單一商品庫存
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoodsInventoryUpdateDto'
+      tags:
+        - Goods
+  /goods:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Goods
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GoodsViewDto'
+      operationId: get-goods
+      description: 取得商品清單
+components:
+  schemas:
+    ErrorMessage:
+      title: Root Type for ErrorMessage
+      description: 錯誤訊息
+      type: object
+      example:
+        timestamp: '2020-11-23T02:20:45.938+00:00'
+        status: 401
+        error: Unauthorized
+        message: 未授權存取
+        path: /employees
+        errors:
+          - defaultMessage: 值 需介於 1 到 2 之間
+            objectName: createDto
+            field: accessLimit
+            rejectedValue: 3
+            bindingFailure: false
+            code: Range
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        status:
+          format: int32
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorMessageDetail'
+    ErrorMessageDetail:
+      title: Root Type for ErrorMessageDetail
+      description: 錯誤明細
+      type: object
+      properties:
+        defaultMessage:
+          type: string
+        objectName:
+          type: string
+        field:
+          type: string
+        rejectedValue:
+          format: int32
+          type: integer
+        bindingFailure:
+          type: boolean
+        code:
+          type: string
+      example:
+        defaultMessage: 值 需介於 1 到 2 之間
+        objectName: createDto
+        field: accessLimit
+        rejectedValue: 3
+        bindingFailure: false
+        code: Range
+    GoodsViewDto:
+      title: goodsViewDto
+      type: object
+      description: Goods object view Data Transfer Object
+      properties:
+        goodsId:
+          type: string
+          description: goods ID
+        goodsName:
+          type: string
+          description: goods name
+        unitPrice:
+          type: integer
+          description: unit price
+        inventory:
+          type: integer
+          description: inventory
+      required:
+        - goodsId
+        - goodsName
+        - unitPrice
+        - inventory
+      x-examples:
+        example-1:
+          goodsId: '100112012'
+          goodsName: 口罩
+          unitPrice: 100
+          inventory: 5
+    GoodsInventoryUpdateDto:
+      title: goodsInventoryUpdateDto
+      type: object
+      properties:
+        inventory:
+          type: integer
+          description: 庫存數量
+          minimum: 0
+          exclusiveMinimum: false
+      required:
+        - inventory
+      description: 商品庫存更新
+      x-tags:
+        - goodss
+  responses:
+    ErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+      description: 錯誤通用回覆
+  securitySchemes:
+    JWT:
+      scheme: bearer
+      type: http
+      description: JWT 格式 Token
+  parameters:
+    goodsId:
+      name: goodsId
+      in: path
+      schema:
+        type: string
+        example: '0001'
+      description: 商品ID
+      required: true
+security:
+  - JWT: []
+tags:
+  - name: Goods
