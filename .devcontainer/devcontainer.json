@@ -22,14 +22,21 @@
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"vscjava.vscode-java-pack"
+		"vscjava.vscode-java-pack",
+		"Pivotal.vscode-boot-dev-pack",
+		"GabrielBB.vscode-lombok",
+		"ms-azuretools.vscode-docker",
+		"redhat.fabric8-analytics",
+		"sonarsource.sonarlint-vscode",
+		"jebbs.plantuml",
+		"shd101wyy.markdown-preview-enhanced"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [8080],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "java -version",
+	"postCreateCommand": "sudo apt update && sudo apt install -y graphviz",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
