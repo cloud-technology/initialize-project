@@ -18,6 +18,23 @@ services:
       options:
         max-size: 20m
         max-file: '2'
+  # 需要單獨模擬對方回應
+  # mockOrders:
+  #   image: 'stoplight/prism:4'
+  #   restart: always
+  #   command: mock -h 0.0.0.0 "/tmp/openapi-goods.yml"
+  #   volumes:
+  #     - ../specs:/tmp
+  #   ports:
+  #     - '4010:4010'
+  #   networks:
+  #     - privateBridge
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: 20m
+  #       max-file: '2'
+
 
 # volumes:
 #   dbData:

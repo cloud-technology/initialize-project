@@ -40,6 +40,23 @@ paths:
                 $ref: '#/components/schemas/OrderViewDto'
       tags:
         - Order
+  /appName:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: Orders
+                properties:
+                  name:
+                    type: string
+                    example: orders
+      operationId: get-appName
 components:
   schemas:
     ErrorMessage:
@@ -200,7 +217,5 @@ components:
       schema:
         type: string
       description: 訂單編號
-security:
-  - JWT: []
 tags:
   - name: Order

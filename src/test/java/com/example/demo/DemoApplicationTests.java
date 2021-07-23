@@ -32,26 +32,45 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.testcontainers.containers.BindMode;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 @Slf4j
 @ActiveProfiles("unittest")
 @Testcontainers(disabledWithoutDocker = true)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = DemoApplication.class)
 class DemoApplicationTests {
-  @Container
-  private static final PostgreSQLContainer database =
-      new PostgreSQLContainer("postgres:13.3")
-          .withDatabaseName("testdb");
-
-  @Autowired private TestRestTemplate restTemplate;
-
   @Value("${apiDocPath}")
   private String apiDocPath;
+
+  @Container
+  private static final PostgreSQLContainer database =
+      new PostgreSQLContainer("postgres:13.3").withDatabaseName("testdb");
+
+  @Container
+  public static final GenericContainer mockGoods =
+      new GenericContainer(DockerImageName.parse("stoplight/prism:4"))
+          .withExposedPorts(4010)
+          .withFileSystemBind(
+              "./specs/openapi-goods.yml", "/tmp/openapi-goods.yml", BindMode.READ_ONLY)
+          .withCommand("mock -h 0.0.0.0 /tmp/openapi-goods.yml");
+
+  @Container
+  public static final GenericContainer mockOrders =
+      new GenericContainer(DockerImageName.parse("stoplight/prism:4"))
+          .withExposedPorts(4010)
+          .withFileSystemBind(
+              "./specs/openapi-orders.yml", "/tmp/openapi-orders.yml", BindMode.READ_ONLY)
+          .withCommand("mock -h 0.0.0.0 /tmp/openapi-orders.yml");
+
+  @Autowired private TestRestTemplate testRestTemplate;
 
   @DynamicPropertySource
   static void mysqlProperties(DynamicPropertyRegistry registry) {
@@ -83,7 +102,7 @@ class DemoApplicationTests {
 
     try {
       responseEntity =
-          restTemplate.exchange(uriComponents.getPath(), HttpMethod.GET, null, String.class);
+          testRestTemplate.exchange(uriComponents.getPath(), HttpMethod.GET, null, String.class);
     } catch (Exception e) {
       log.error("uri={}, responseEntity={}", uriComponents.getPath(), responseEntity, e);
     }
@@ -126,7 +145,45 @@ class DemoApplicationTests {
     assertNotNull(responseEntity.getBody());
   }
 
-  //   @Test
+  @Test
+  @DisplayName("testGoodsAPI 😱")
+  public void testGoodsAPI() throws Exception {
+    UriComponentsBuilder uriComponentsBuilder =
+        UriComponentsBuilder.fromHttpUrl(
+            "http://localhost:" + mockGoods.getMappedPort(4010) + "/appName");
+    UriComponents uriComponents = uriComponentsBuilder.build();
+    ResponseEntity<String> responseEntity = null;
+    try {
+      RestTemplate restTemplate = new RestTemplate();
+      responseEntity =
+          restTemplate.exchange(uriComponents.toUri(), HttpMethod.GET, null, String.class);
+      log.info("uri={}, responseBody={}", uriComponents.toUri(), responseEntity.getBody());
+    } catch (Exception e) {
+      log.error("uri={}, responseEntity={}", uriComponents.toUri(), responseEntity, e);
+    }
+    assertNotNull(responseEntity.getBody());
+  }
+
+  @Test
+  @DisplayName("testOrdersAPI 😱")
+  public void testOrdersAPI() throws Exception {
+    UriComponentsBuilder uriComponentsBuilder =
+        UriComponentsBuilder.fromHttpUrl(
+            "http://localhost:" + mockOrders.getMappedPort(4010) + "/appName");
+    UriComponents uriComponents = uriComponentsBuilder.build();
+    ResponseEntity<String> responseEntity = null;
+    try {
+      RestTemplate restTemplate = new RestTemplate();
+      responseEntity =
+          restTemplate.exchange(uriComponents.toUri(), HttpMethod.GET, null, String.class);
+      log.info("uri={}, responseBody={}", uriComponents.toUri(), responseEntity.getBody());
+    } catch (Exception e) {
+      log.error("uri={}, responseEntity={}", uriComponents.toUri(), responseEntity, e);
+    }
+    assertNotNull(responseEntity.getBody());
+  }
+
+  // @Test
   public void get_cart_test() throws Exception {
     log.debug("some input ex cartId={}", "001");
     UriComponents uriComponents = UriComponentsBuilder.fromUriString("/carts/{cartId}").build();
@@ -134,7 +191,8 @@ class DemoApplicationTests {
     ResponseEntity<CartInfoDto> responseEntity = null;
     try {
       responseEntity =
-          restTemplate.exchange(uriComponents.getPath(), HttpMethod.GET, null, CartInfoDto.class);
+          testRestTemplate.exchange(
+              uriComponents.getPath(), HttpMethod.GET, null, CartInfoDto.class);
     } catch (Exception e) {
       log.error("uri={}, responseEntity={}", uriComponents.getPath(), responseEntity, e);
     }
@@ -146,7 +204,7 @@ class DemoApplicationTests {
     Assert.assertEquals(responseEntity.getBody().getCustomerName(), "sam");
   }
 
-  //   @Test
+  // @Test
   public void file_name_and_package_name_and_architecture_rule() {
     JavaClasses importedClasses =
         new ClassFileImporter()

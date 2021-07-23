@@ -78,6 +78,23 @@ paths:
                   $ref: '#/components/schemas/GoodsViewDto'
       operationId: get-goods
       description: 取得商品清單
+  /appName:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                example: goods
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: goods
+      operationId: get-appName
 components:
   schemas:
     ErrorMessage:
@@ -143,30 +160,41 @@ components:
       title: goodsViewDto
       type: object
       description: Goods object view Data Transfer Object
+      x-examples:
+        example-1:
+          value:
+            goodsId: '9864347926'
+            goodsName: CQRS 命令查詢職責分離模式
+            unitPrice: 390
+            inventory: 10
+        example-2:
+          value:
+            goodsId: '9864347551'
+            goodsName: 矽谷工程師教你 Kubernetes
+            unitPrice: 468
+            inventory: 20
       properties:
         goodsId:
           type: string
           description: goods ID
+          example: '7111679369'
         goodsName:
           type: string
           description: goods name
+          example: 架構師的自我修煉：技術、架構和未來
         unitPrice:
           type: integer
           description: unit price
+          example: 507
         inventory:
           type: integer
           description: inventory
+          example: 5
       required:
         - goodsId
         - goodsName
         - unitPrice
         - inventory
-      x-examples:
-        example-1:
-          goodsId: '100112012'
-          goodsName: 口罩
-          unitPrice: 100
-          inventory: 5
     GoodsInventoryUpdateDto:
       title: goodsInventoryUpdateDto
       type: object
@@ -202,7 +230,5 @@ components:
         example: '0001'
       description: 商品ID
       required: true
-security:
-  - JWT: []
 tags:
   - name: Goods
