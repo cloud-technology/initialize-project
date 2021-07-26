@@ -6,6 +6,7 @@
   - [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) (requirement)  
   - [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack) (requirement)  
   - [Lombok Annotations Support for VS Code](https://marketplace.visualstudio.com/items?itemName=GabrielBB.vscode-lombok) (requirement)  
+  - [Gradle Extension Pack](https://marketplace.visualstudio.com/items?itemName=richardwillis.vscode-gradle-extension-pack) (requirement)  
 - JDK 11 Select One  
   1. [AdoptOpenJDK](https://adoptopenjdk.net/)  
   2. [Community builds using source code from OpenJDK project](https://github.com/ojdkbuild/ojdkbuild)  

@@ -24,6 +24,7 @@
 	"extensions": [
 		"vscjava.vscode-java-pack",
 		"Pivotal.vscode-boot-dev-pack",
+		"richardwillis.vscode-gradle-extension-pack",
 		"GabrielBB.vscode-lombok",
 		"ms-azuretools.vscode-docker",
 		"redhat.fabric8-analytics",
