@@ -51,12 +51,12 @@ paths:
             application/json:
               schema:
                 type: object
-                example: Orders
                 properties:
-                  name:
+                  appName:
                     type: string
                     example: orders
       operationId: get-appName
+      description: 取得 APP 名稱
 components:
   schemas:
     ErrorMessage:

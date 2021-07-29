@@ -78,6 +78,15 @@ ex: cat-mid-cl-enterprise
 **References**  
 [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 
+## 領域模型命名
+- DTO(Data Transfer Object): 數據傳輸對象，Service 或 Manager 向外傳輸的對象。
+- BO(Business Object): 業務對象，可以由 Service 層輸出的封裝業務邏輯的對象。
+- VO(View Object): 顯示層對象，通常是 Web 向模板渲染引擎層傳輸的對象，這邊也拿來作為領域物件的顯示對象。
+- Repository: 儲存庫
+- Command: 命令
+- Event(Domain Event): 一個域物件定義了一個事件。域事件是域專家所關心的事件
+- Aggregate: 由 ROOT ENTITY 繫結在一起的物件的集合，也稱為聚合根。
+
 ## Database
 <table>
 <tr>

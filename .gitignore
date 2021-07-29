@@ -54,3 +54,6 @@ bin/
 
 # build #
 /src/asciidoc/build
+
+# openapi-generator #
+pom.xml

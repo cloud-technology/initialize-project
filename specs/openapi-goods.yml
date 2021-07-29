@@ -36,7 +36,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GoodsViewDto'
+                $ref: '#/components/schemas/GoodsVo'
         '404':
           $ref: '#/components/responses/ErrorResponse'
       operationId: get-goods-goodsId
@@ -53,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GoodsViewDto'
+                $ref: '#/components/schemas/GoodsVo'
       description: 更新單一商品庫存
       requestBody:
         content:
@@ -75,7 +75,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GoodsViewDto'
+                  $ref: '#/components/schemas/GoodsVo'
       operationId: get-goods
       description: 取得商品清單
   /appName:
@@ -88,13 +88,13 @@ paths:
           content:
             application/json:
               schema:
-                example: goods
                 type: object
                 properties:
-                  name:
+                  appName:
                     type: string
                     example: goods
       operationId: get-appName
+      description: 取得 APP 名稱
 components:
   schemas:
     ErrorMessage:
@@ -156,8 +156,8 @@ components:
         rejectedValue: 3
         bindingFailure: false
         code: Range
-    GoodsViewDto:
-      title: goodsViewDto
+    GoodsVo:
+      title: goodsVo
       type: object
       description: Goods object view Data Transfer Object
       x-examples:
