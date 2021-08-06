@@ -30,7 +30,8 @@
 		"redhat.fabric8-analytics",
 		"sonarsource.sonarlint-vscode",
 		"jebbs.plantuml",
-		"shd101wyy.markdown-preview-enhanced"
+		"shd101wyy.markdown-preview-enhanced",
+		"hediet.vscode-drawio"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
