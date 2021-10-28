@@ -254,12 +254,13 @@ or 使用 [VS Code Remote Development](https://marketplace.visualstudio.com/item
 Why not use Gitflow?  
 [Long-lived branches with Gitflow By thoughtworks](https://www.thoughtworks.com/radar/techniques/long-lived-branches-with-gitflow)  
 [A successful Git branching model By Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/)  
+[Gitflow is a legacy Git workflow that was originally a disruptive and novel strategy for managing Git branches. By atlassian](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
 # 優雅的提交你的 Git Commit Message
 [約定式提交](https://www.conventionalcommits.org/zh-hant/v1.0.0/)  
 [透過工具建立有規範的 git commit message 吧](https://pjchender.blogspot.com/2021/07/git-commit-message.html)  
-[我是怎么写 Git Commit message 的？](https://mp.weixin.qq.com/s/PuYEiaI4T3VFJMhi-_qQ8w)
-[Git Commit Message Format & Lint](https://github.com/cloud-technology/initialize-project/blob/main/docs/Git-Commit.md)  
+[我是怎么写 Git Commit message 的？](https://mp.weixin.qq.com/s/PuYEiaI4T3VFJMhi-_qQ8w)  
+[Git Commit Message Format & Lint](https://github.com/cloud-technology/initialize-project/blob/main/docs/Git_Commit.md)  
 
 # Download project template
 [start.spring.io](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.5.2.RELEASE&packaging=jar&jvmVersion=11&groupId=com.github.cloud-technology&artifactId=cart&name=cart&description=Demo%20project%20for%20Spring%20Boot&packageName=com.github.ct&dependencies=web,data-rest,data-jpa,validation,actuator,lombok,prometheus,cloud-starter-sleuth,testcontainers,cloud-feign,liquibase,postgresql)  
