@@ -39,21 +39,9 @@ bin/
 .vscode/
 
 # SpringBoot Config #
-**/application-*.yml
-!**/application-dev.yml
-!**/application-dev-secret.yml
-!**/application-unittest.yml
-
-**/application-*.properties
-!**/application-dev.properties
-!**/application-dev-secret.properties
-!**/application-unittest.properties
 
 # Mac #
 .DS_Store
 
 # build #
 /src/asciidoc/build
-
-# openapi-generator #
-pom.xml
